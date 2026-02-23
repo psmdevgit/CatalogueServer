@@ -4,7 +4,9 @@ const { sql, getConnection } = require("../db");
 const axios = require("axios");
 
 
-// 👉 GET ALL PRODUCTS
+// gold product ==============================================================================================
+
+// 👉 GET ALL CATEGORY
 router.get("/categoryGroup", async (req, res) => {
     try {
         const pool = await getConnection();
@@ -20,6 +22,59 @@ router.get("/categoryGroup", async (req, res) => {
         res.status(500).send(err.message);
     }
 });
+
+// 👉 GET ALL PRODUCTS
+router.get("/productGroup", async (req, res) => {
+    try {
+        const pool = await getConnection();
+
+        const result = await pool.request().query(`            
+              select distinct Proname from CatMaster
+        `);
+
+        res.json(result.recordset);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err.message);
+    }
+});
+
+// 👉 GET ALL PRODUCTS
+router.get("/catMaster", async (req, res) => {
+    try {
+        const pool = await getConnection();
+
+        const result = await pool.request().query(`         
+            select * from CatMaster 
+        `);
+
+        res.json(result.recordset);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send(err.message);
+    }
+});
+
+// GET ALL SUB PRODUCTS
+
+router.get("/subProducts", async (req, res) => {
+  const pool = await getConnection();
+  const result = await pool.request().query(`
+    SELECT DISTINCT SubProName 
+    FROM POTJMaster.dbo.SubProduct
+    ORDER BY SubProName
+  `);
+
+  res.json(result.recordset); // IMPORTANT
+});
+
+
+
+// ==============================================================================================
+
+
 
 // 👉 INSERT PRODUCT
 router.post("/products", async (req, res) => {
@@ -96,14 +151,5 @@ router.get("/goldProducts/search", async (req, res) => {
 });
 
 
-router.get("/subProducts", async (req, res) => {
-  const pool = await getConnection();
-  const result = await pool.request().query(`
-    SELECT DISTINCT SubProName 
-    FROM POTJMaster.dbo.SubProduct
-    ORDER BY SubProName
-  `);
 
-  res.json(result.recordset); // IMPORTANT
-});
 module.exports = router;
