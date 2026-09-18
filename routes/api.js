@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -501,5 +501,4 @@ router.get("/goldProducts/search", async (req, res) => {
 
 
 
->>>>>>> 144f32d80dbe576276f34a6a1698068080a47dac
 module.exports = router;
